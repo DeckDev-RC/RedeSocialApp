@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "651467475402",
+    "project_id": "appcadeado-e8f20",
+    "storage_bucket": "appcadeado-e8f20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651467475402:android:5003e61e4ca643c0076733",
+        "android_client_info": {
+          "package_name": "com.example.app_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOLB6_rRgIKsqyVlFjQE4tYE5xRiysse8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
