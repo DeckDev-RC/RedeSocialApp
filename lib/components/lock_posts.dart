@@ -204,43 +204,23 @@ class _LockPostState extends State<LockPost> {
         color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(8),
       ),
-      margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
-      padding: const EdgeInsets.all(25),
+      margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+      padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Posts
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //grupo de texto (mensagem + email usuário)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Mensagem
-                  Text(widget.message),
 
-                  const SizedBox(height: 5),
-
-                  // Usuário
-                  Row(
-                    children: [
-                      Text(
-                        widget.user,
-                        style: TextStyle(color: Colors.grey[400]),
-                      ),
-                      Text(
-                        ' . ',
-                        style: TextStyle(color: Colors.grey[400]),
-                      ),
-                      Text(
-                        widget.time,
-                        style: TextStyle(color: Colors.grey[400]),
-                      ),
-                    ],
-                  ),
-                ],
+              // Mensagem
+              Text(
+                widget.message,
+                style: const TextStyle(
+                  fontSize: 15,
+                ),
               ),
 
               // botão deletar
@@ -249,51 +229,53 @@ class _LockPostState extends State<LockPost> {
             ],
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 25),
 
           // botões
+
+          //LIKE
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              //LIKE
-              Column(
-                children: [
-                  // BOTÃO DE LIKE
-                  LikeButton(
-                    isLiked: isLiked,
-                    onTap: toggleLIke,
-                  ),
-
-                  const SizedBox(height: 5),
-
-                  //CONTADOR DE LIKES
-                  Text(
-                    widget.likes.length.toString(),
-                    style: const TextStyle(color: Colors.grey),
-                  )
-                ],
+              Text(
+                widget.user,
+                style: TextStyle(color: Colors.grey[400]),
               ),
 
-              const SizedBox(width: 10),
+              Text(
+                widget.time,
+                style: TextStyle(color: Colors.grey[400]),
+              ),
+
+              const SizedBox(width: 50),
+
+              //CONTADOR DE LIKES
+              Text(
+                widget.likes.length.toString(),
+                style: const TextStyle(color: Colors.grey),
+              ),
+              const SizedBox(width: 5),
+              // BOTÃO DE LIKE
+              LikeButton(
+                isLiked: isLiked,
+                onTap: toggleLIke,
+              ),
+
+              const SizedBox(width: 5),
 
               //COMENTARIO
-              Column(
-                children: [
-                  // BOTÃO DE COMENTARIO
-                  CommentButton(onTap: showCommentDialog),
 
-                  const SizedBox(height: 5),
-                  //CONTADOR DE comentarios
-                  Text(
-                    commentCount.toString(),
-                    style: const TextStyle(color: Colors.grey),
-                  )
-                ],
+              //CONTADOR DE comentarios
+              Text(
+                commentCount.toString(),
+                style: const TextStyle(color: Colors.grey),
               ),
+              const SizedBox(width: 5),
+
+              // BOTÃO DE COMENTARIO
+              CommentButton(onTap: showCommentDialog),
             ],
           ),
-
-          const SizedBox(height: 20),
 
           //comentários de baixo do post
           StreamBuilder<QuerySnapshot>(

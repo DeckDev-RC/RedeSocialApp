@@ -1,3 +1,4 @@
+import 'package:app_2/auth/login_or_register.dart';
 import 'package:app_2/components/my_button.dart';
 import 'package:app_2/components/my_textfield.dart';
 import 'package:app_2/helper/helper_functions.dart';
@@ -22,9 +23,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   // Cadastro de usuário
   void signUp() async {
+    BuildContext? localContext = context;
     //Mostrando circulo de carregamento
     showDialog(
-      context: context,
+      context: localContext,
       builder: (context) => const Center(
         child: CircularProgressIndicator(),
       ),
@@ -45,50 +47,55 @@ class _RegisterPageState extends State<RegisterPage> {
           password: passwordTextController.text,
         );
 
-        //criar um documento de usuário e adicionar ao firestore
-        createUserDocument(userCredential);
-
         // circulo de carregamento
-        // ignore: use_build_context_synchronously
-        Navigator.pop(context);
+        Navigator.pop(localContext);
 
         //depois de criar o usuário, criar novo documento na nuvem firestore chamada Users
-        //FirebaseFirestore.instance
-        //    .collection('Users')
-        //    .doc(userCredential.user!.email)
-        //    .set({
-        //  'username':
-        //      emailTextController.text.split('@')[0], // inicio nome de usuário
-        //  'bio': 'Empty bio...' // inicio bio vazia
-        //  // adicionar qualquer campo necessario
-        //});
+        FirebaseFirestore.instance
+            .collection('Users')
+            .doc(userCredential.user!.email)
+            .set({
+          'email': userCredential.user!.email,
+          'username': usernameTextController.text,
+          'bio': 'Empty bio...', // inicio bio vazia
+          // adicionar qualquer campo necessario
+        });
 
         // pop circulo de carregamento
         if (context.mounted) Navigator.pop(context);
+
+        //Navegar de volta para a tela de login
+        // ignore: use_build_context_synchronously
+        Navigator.push(localContext,
+            MaterialPageRoute(builder: (context) => const LoginOrRegister()));
+        //
+
+        // ignore: use_build_context_synchronously
+        displayMessageToUser('Conta criada com sucesso!', context);
       } on FirebaseAuthException catch (e) {
         // pop circulo de carregamento
         // ignore: use_build_context_synchronously
-        Navigator.pop(context);
+        Navigator.pop(localContext);
         // Mostrar erro para usuário
         // ignore: use_build_context_synchronously
-        displayMessageToUser(e.code, context);
+        displayMessageToUser(e.code, localContext);
       }
     }
   }
 
   //Criar um documento de usuário e coletar
-  Future<void> createUserDocument(UserCredential? userCredential) async {
-    if (userCredential != null && userCredential.user != null) {
-      await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(userCredential.user!.email)
-          .set({
-        'email': userCredential.user!.email,
-        'username': usernameTextController.text,
-        'bio': 'Empty bio...',
-      });
-    }
-  }
+  //Future<void> createUserDocument(UserCredential? userCredential) async {
+  //  if (userCredential != null && userCredential.user != null) {
+  //    await FirebaseFirestore.instance
+  //        .collection('Users')
+  //        .doc(userCredential.user!.email)
+  //        .set({
+  //      'email': userCredential.user!.email,
+  //      'username': usernameTextController.text,
+  //      'bio': 'Empty bio...',
+  //    });
+  //  }
+  //}
 
   @override
   Widget build(BuildContext context) {

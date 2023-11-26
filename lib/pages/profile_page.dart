@@ -60,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
 
     //atualizando no Firestore
-    if (newValue.trim().length > 0) {
+    if (newValue.trim().isNotEmpty) {
       //Atualizar apenas se houver algo no campo de texto
       await usersCollection.doc(currentUser.email).update({field: newValue});
     }
@@ -96,18 +96,34 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 50),
 
                 //foto de perfil
-                const Icon(
-                  Icons.person,
-                  size: 72,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      padding: const EdgeInsets.all(25),
+                      child: const Icon(
+                        Icons.person,
+                        size: 72,
+                      ),
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 10),
 
                 //email do usuário
                 Text(
-                  currentUser.email!,
+                  userData['username'],
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey[700]),
+                  style: TextStyle(
+                    color: Colors.green[500],
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
 
                 const SizedBox(height: 50),

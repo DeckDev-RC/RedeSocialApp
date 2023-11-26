@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         body: Center(
           child: TextField(
             obscureText: false,
-            style: TextStyle(color: Colors.blue, letterSpacing: 2.0), // Ajuste o estilo aqui
+            style: const TextStyle(color: Colors.blue, letterSpacing: 2.0), // Ajuste o estilo aqui
             decoration: InputDecoration(
               labelText: 'Label', // Adicione um rótulo para melhorar a visibilidade
               labelStyle: const TextStyle(color: Colors.green, letterSpacing: 20),

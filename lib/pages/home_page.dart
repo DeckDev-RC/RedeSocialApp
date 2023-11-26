@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                     .collection('User Posts')
                     .orderBy(
                       'TimeStamp',
-                      descending: false,
+                      descending: true,
                     )
                     .snapshots(),
                 builder: (context, snapshot) {
@@ -143,14 +143,20 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: MyTextField(
                       controller: textController,
-                      hintText: 'Escreva algo no cadeado...',
+                      hintText: 'Escreva no L O C K E R...',
                       obscureText: false,
                     ),
                   ),
                   //Botão de postagem
-                  IconButton(
-                    onPressed: postMessage,
-                    icon: const Icon(Icons.arrow_circle_up),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: IconButton(
+                      onPressed: postMessage,
+                      icon: const Icon(Icons.arrow_circle_up),
+                    ),
                   ),
                 ],
               ),
