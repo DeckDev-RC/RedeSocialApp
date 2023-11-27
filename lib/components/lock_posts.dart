@@ -219,7 +219,7 @@ class _LockPostState extends State<LockPost> {
               Text(
                 widget.message,
                 style: const TextStyle(
-                  fontSize: 15,
+                  fontSize: 18,
                 ),
               ),
 
@@ -241,6 +241,8 @@ class _LockPostState extends State<LockPost> {
                 widget.user,
                 style: TextStyle(color: Colors.grey[400]),
               ),
+
+              const Text(' '),
 
               Text(
                 widget.time,

@@ -1,7 +1,6 @@
 import 'package:app_2/components/my_button.dart';
 import 'package:app_2/components/my_textfield.dart';
 import 'package:app_2/components/square_tile.dart';
-import 'package:app_2/helper/helper_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -35,23 +34,44 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordController.text,
       );
       // pop do circulo de carregamento
-      if (context.mounted) Navigator.pop(context);
+      circularLoad();
     } on FirebaseAuthException catch (e) {
-      // pop do circulo de carregamento
-      //invalid-credential
-      Navigator.pop(context);
+      circularLoad();
+      //Senha ou email errado
+      if (e.code == 'invalid-credential') {
+        wrongEmailOrPwdMessage();
+        // email invalido
+      } else if (e.code == 'invalid-email') {
+        invalidEmailMessage();
+      }
       // display de mensagem de erro
-      displayMessageToUser(e.code, context);
+      // displayMessageToUser(e.code, context);
     }
   }
 
-  //Caixa de dialogo para usuário
-  void displayMessage(String message) {
+  void circularLoad() {
+    Navigator.pop(context);
+  }
+
+  void wrongEmailOrPwdMessage() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(message),
-      ),
+      builder: (context) {
+        return const AlertDialog(
+          title: Text('Email ou Senha incorretos!'),
+        );
+      },
+    );
+  }
+
+  void invalidEmailMessage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Text('Email Inválido!'),
+        );
+      },
     );
   }
 

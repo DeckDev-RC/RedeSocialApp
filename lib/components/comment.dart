@@ -33,15 +33,15 @@ class Comment extends StatelessWidget {
             children: [
               Text(
                 user,
-                style: TextStyle(color: Colors.grey[400]),
+                style: TextStyle(color: Colors.green[500]),
               ),
               Text(
                 ' . ',
-                style: TextStyle(color: Colors.grey[400]),
+                style: TextStyle(color: Colors.green[500]),
               ),
               Text(
                 time,
-                style: TextStyle(color: Colors.grey[400]),
+                style: TextStyle(color: Colors.green[500]),
               ),
             ],
           ),

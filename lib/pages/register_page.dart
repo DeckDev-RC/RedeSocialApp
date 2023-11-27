@@ -1,4 +1,3 @@
-import 'package:app_2/auth/login_or_register.dart';
 import 'package:app_2/components/my_button.dart';
 import 'package:app_2/components/my_textfield.dart';
 import 'package:app_2/helper/helper_functions.dart';
@@ -23,79 +22,63 @@ class _RegisterPageState extends State<RegisterPage> {
 
   // Cadastro de usuário
   void signUp() async {
-    BuildContext? localContext = context;
     //Mostrando circulo de carregamento
     showDialog(
-      context: localContext,
+      context: context,
       builder: (context) => const Center(
         child: CircularProgressIndicator(),
       ),
     );
+
     // Tendo certeza que as senhas são iguais
     if (passwordTextController.text != confirmPasswordTextController.text) {
       //pop circulo de carregamento
-      Navigator.pop(context);
+      if (Navigator.canPop(context)) {
+        Navigator.of(context).pop();
+      }
       // Mostrar erro para usuário
       displayMessageToUser('Senhas não coincidem!', context);
-    } else {
-      // Tentando criar um usuário
-      try {
-        //criar o usuário
-        UserCredential? userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailTextController.text,
-          password: passwordTextController.text,
-        );
+      return;
+    }
+    // Tentando criar um usuário
+    try {
+      //criar o usuário
+      UserCredential? userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailTextController.text,
+        password: passwordTextController.text,
+      );
 
-        // circulo de carregamento
-        Navigator.pop(localContext);
+      //depois de criar o usuário, criar novo documento na nuvem firestore chamada Users
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(userCredential.user!.email)
+          .set({
+        'email': userCredential.user!.email,
+        'username': usernameTextController.text,
+        'bio': 'Empty bio...', // inicio bio vazia
+        // adicionar qualquer campo necessario
+      });
 
-        //depois de criar o usuário, criar novo documento na nuvem firestore chamada Users
-        FirebaseFirestore.instance
-            .collection('Users')
-            .doc(userCredential.user!.email)
-            .set({
-          'email': userCredential.user!.email,
-          'username': usernameTextController.text,
-          'bio': 'Empty bio...', // inicio bio vazia
-          // adicionar qualquer campo necessario
-        });
+      
+    } on FirebaseAuthException catch (e) {
+      // pop circulo de carregamento
 
-        // pop circulo de carregamento
-        if (context.mounted) Navigator.pop(context);
-
-        //Navegar de volta para a tela de login
-        // ignore: use_build_context_synchronously
-        Navigator.push(localContext,
-            MaterialPageRoute(builder: (context) => const LoginOrRegister()));
-        //
-
-        // ignore: use_build_context_synchronously
-        displayMessageToUser('Conta criada com sucesso!', context);
-      } on FirebaseAuthException catch (e) {
-        // pop circulo de carregamento
-        // ignore: use_build_context_synchronously
-        Navigator.pop(localContext);
-        // Mostrar erro para usuário
-        // ignore: use_build_context_synchronously
-        displayMessageToUser(e.code, localContext);
-      }
+      //mostrar erro
+      displayMessage(e.code);
     }
   }
 
-  //Criar um documento de usuário e coletar
-  //Future<void> createUserDocument(UserCredential? userCredential) async {
-  //  if (userCredential != null && userCredential.user != null) {
-  //    await FirebaseFirestore.instance
-  //        .collection('Users')
-  //        .doc(userCredential.user!.email)
-  //        .set({
-  //      'email': userCredential.user!.email,
-  //      'username': usernameTextController.text,
-  //      'bio': 'Empty bio...',
-  //    });
-  //  }
-  //}
+  void displayMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Center(
+          child: Text(message),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
